@@ -34,4 +34,9 @@ BenchlingChallenge::Application.configure do
 
   # Print deprecation notices to the stderr
   config.active_support.deprecation = :stderr
+
+  # Code for implementing fibers
+  config.middleware.insert_before ActionDispatch::ShowExceptions, Rack::FiberPool
+  config.threadsafe!
+
 end
