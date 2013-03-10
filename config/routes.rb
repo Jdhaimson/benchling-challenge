@@ -1,10 +1,7 @@
 BenchlingChallenge::Application.routes.draw do
-  match "messages/index"
 
-  match "messages/create"
-
-  match "messages/new"
-
+  resources :messages
+ 
   match "index/receive"
 
   match "index/create"
