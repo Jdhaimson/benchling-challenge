@@ -1,2 +1,6 @@
-<h1>Devices#index</h1>
+<h1>Benchling Backend Coding Challenge</h1>
 <%= button_to "Register A New Device", controller: "devices", method: :post %>
+<hr><br>
+<% @devices.each do |device| %>
+  <%= link_to "Device ##{device.id}", device %><br>
+<% end %>
