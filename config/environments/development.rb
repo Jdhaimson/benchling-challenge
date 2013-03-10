@@ -35,7 +35,4 @@ BenchlingChallenge::Application.configure do
   # Expands the lines which load the assets
   config.assets.debug = true
 
-  # Code for implementing fibers
-  config.middleware.insert_before ActionDispatch::ShowExceptions, Rack::FiberPool
-  config.threadsafe!
 end

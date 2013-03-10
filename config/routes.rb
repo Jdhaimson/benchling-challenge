@@ -1,4 +1,14 @@
 BenchlingChallenge::Application.routes.draw do
+  match "messages/index"
+
+  match "messages/receive"
+
+  match "messages/create"
+
+  match "index/receive"
+
+  match "index/create"
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
