@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 gem 'rails', '3.2.11'
 
-# Gems for async programming with pg
+# Gems for async programming with pg and amazon s3
 # For more info, see: https://github.com/leftbee/em-postgresql-adapter
 gem 'pg'
 gem 'thin'
@@ -12,9 +12,9 @@ gem 'em-synchrony', :git     => 'git://github.com/igrigorik/em-synchrony.git',
                     :require => ['em-synchrony',
                                  'em-synchrony/activerecord']
 
-#gem 'paperclip'
-#gem 'aws-sdk'
-#gem 'em_aws'
+gem 'paperclip'
+gem 'aws-sdk'
+gem 'em_aws'
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -25,6 +25,7 @@ group :assets do
 end
 
 group :development do
+  gem 'annotate'
   gem 'better_errors'
   gem 'binding_of_caller'
   gem 'meta_request'
