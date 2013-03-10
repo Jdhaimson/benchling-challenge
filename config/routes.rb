@@ -1,7 +1,8 @@
 BenchlingChallenge::Application.routes.draw do
 
-  resources :devices
-  resources :messages
+  resources :devices do
+    resources :messages
+  end
  
   root to: "devices#index"
 

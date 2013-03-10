@@ -1,10 +1,12 @@
 class MessagesController < ApplicationController
   def index
-    @message = Message.last
+    @messages = Message.where("device_id = #{params[:device_id]}")
   end
 
   def new
-    @message = Message.new() 
+    @device_id = params[:device_id]
+    @device = Device.find(@device_id)
+    @message = @device.messages.build
   end
 
   def create

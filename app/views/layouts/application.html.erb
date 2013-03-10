@@ -9,6 +9,7 @@
 <body>
 <%= flash.each { |message| message } if !flash.empty? %>
 <%= yield %>
-
+<hr>
+<%= link_to "Take Me Home", root_path %>
 </body>
 </html>
