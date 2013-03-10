@@ -11,8 +11,10 @@ gem 'rack-fiber_pool',  :require => 'rack/fiber_pool'
 gem 'em-synchrony', :git     => 'git://github.com/igrigorik/em-synchrony.git',
                     :require => ['em-synchrony',
                                  'em-synchrony/activerecord']
-gem 'paperclip'
-gem 'aws-sdk'
+
+#gem 'paperclip'
+#gem 'aws-sdk'
+#gem 'em_aws'
 
 # Gems used only for assets and not required
 # in production environments by default.

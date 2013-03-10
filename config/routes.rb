@@ -1,9 +1,9 @@
 BenchlingChallenge::Application.routes.draw do
   match "messages/index"
 
-  match "messages/receive"
-
   match "messages/create"
+
+  match "messages/new"
 
   match "index/receive"
 
