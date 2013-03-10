@@ -11,7 +11,7 @@ class MessagesController < ApplicationController
 
   def create
     @message = Message.create(params[:message])
-    redirect_to @message
+    redirect_to Device.find(params[:message][:device_id])
   end
 
   def show
