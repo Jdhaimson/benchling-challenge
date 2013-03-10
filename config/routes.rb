@@ -1,5 +1,6 @@
 BenchlingChallenge::Application.routes.draw do
 
+  resources :devices
   resources :messages
  
   match "index/receive"

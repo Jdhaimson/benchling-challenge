@@ -1,0 +1,17 @@
+# == Schema Information
+#
+# Table name: devices
+#
+#  id               :integer          not null, primary key
+#  registration_key :integer
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#
+
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  registration_key: 1
+
+two:
+  registration_key: 1

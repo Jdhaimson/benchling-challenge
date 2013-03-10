@@ -16,4 +16,5 @@
 class Message < ActiveRecord::Base
   attr_accessible :device_id, :filepath, :data
   has_attached_file :data, :storage => :s3, :s3_credentials => "#{Rails.root}/config/s3.yml", :path => "/:id/:filename"
+  belongs_to :device
 end
