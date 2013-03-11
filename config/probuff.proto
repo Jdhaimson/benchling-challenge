@@ -1,0 +1,8 @@
+package ProBuff;
+
+message MyMessage {
+  required string registration_key = 1;
+  required int32 device_id = 2;
+  repeated string data = 3;
+  repeated bytes binary_data = 4;
+}

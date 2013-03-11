@@ -16,6 +16,10 @@ gem 'paperclip'
 gem 'aws-sdk'
 gem 'em_aws'
 
+gem 'ruby-protocol-buffers'
+gem 'ruby_protobuf'
+gem 'varint'
+
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do

@@ -17,4 +17,12 @@ class MessagesController < ApplicationController
   def show
     @message = Message.find(params[:id])
   end
+
+  def test
+    require 'probuff.pb' 
+    msg = ProBuff::MyMessage.new( registration_key: "123456789", device_id: 6 )
+    msg.data.append("Hello World")
+    @messageenc = msg.to_s
+    @messagedec = msg.parse_from_string(@messageenc)
+  end
 end
