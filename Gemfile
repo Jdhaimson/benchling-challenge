@@ -12,9 +12,9 @@ gem 'em-synchrony', :git     => 'git://github.com/igrigorik/em-synchrony.git',
                     :require => ['em-synchrony',
                                  'em-synchrony/activerecord']
 
-gem 'paperclip'
-gem 'aws-sdk'
-gem 'em_aws'
+# gem 'paperclip'
+# gem 'aws-sdk'
+# gem 'em_aws'
 
 gem 'ruby-protocol-buffers'
 gem 'ruby_protobuf'

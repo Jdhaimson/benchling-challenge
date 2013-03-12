@@ -12,6 +12,10 @@ class DevicesController < ApplicationController
 
   def show
     @device = Device.find(params[:id])
-    @message = @device.messages.last
+
+    #Pull last message and decode the data
+    require 'probuff.pb'
+    pb = ProBuff::MyMessage.new 
+    @message = pb.parse_from_string(@device.messages.last.data).as_json
   end
 end

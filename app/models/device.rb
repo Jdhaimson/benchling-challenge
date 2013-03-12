@@ -3,7 +3,7 @@
 # Table name: devices
 #
 #  id               :integer          not null, primary key
-#  registration_key :integer
+#  registration_key :string(255)
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #

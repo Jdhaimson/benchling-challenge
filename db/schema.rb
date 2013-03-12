@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130310090854) do
+ActiveRecord::Schema.define(:version => 20130312023540) do
 
   create_table "devices", :force => true do |t|
     t.string   "registration_key"
@@ -21,13 +21,9 @@ ActiveRecord::Schema.define(:version => 20130310090854) do
 
   create_table "messages", :force => true do |t|
     t.integer  "device_id"
-    t.string   "filepath"
-    t.datetime "created_at",        :null => false
-    t.datetime "updated_at",        :null => false
-    t.string   "data_file_name"
-    t.string   "data_content_type"
-    t.integer  "data_file_size"
-    t.datetime "data_updated_at"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+    t.binary   "data"
   end
 
   add_index "messages", ["device_id"], :name => "index_messages_on_device_id"

@@ -40,14 +40,14 @@ BenchlingChallenge::Application.configure do
   config.threadsafe!
 
   # Force amazon s3 to use Evented HTTP requests
-  require 'aws-sdk'
-  require 'aws/core/http/em_http_handler'
-  AWS.eager_autoload! # AWS lazyloading is not threadsafe
-  AWS.config(
-    :http_handler => AWS::Http::EMHttpHandler.new(
-      :pool_size => 20, # by default connection pooling is off
-      :async => false # if set to true all requests for this client will be asynchronous
-    )
-  )
+  # require 'aws-sdk'
+  # require 'aws/core/http/em_http_handler'
+  # AWS.eager_autoload! # AWS lazyloading is not threadsafe
+  # AWS.config(
+  #   :http_handler => AWS::Http::EMHttpHandler.new(
+  #     :pool_size => 20, # by default connection pooling is off
+  #     :async => false # if set to true all requests for this client will be asynchronous
+  #   )
+  # )
 
 end
