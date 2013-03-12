@@ -39,6 +39,7 @@ BenchlingChallenge::Application.configure do
   config.middleware.insert_before ActionDispatch::ShowExceptions, Rack::FiberPool
   config.threadsafe!
 
+
   # Force amazon s3 to use Evented HTTP requests
   # require 'aws-sdk'
   # require 'aws/core/http/em_http_handler'
