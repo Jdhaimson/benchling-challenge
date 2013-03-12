@@ -11,7 +11,10 @@ development:
   <<: *base
 
 production:
-  <<: *base
+  adapter: em_postgresql
+  host: localhost
+  username: user
+  database: app-dev
 
 staging:
   <<: *base

@@ -23,7 +23,8 @@ class MessagesController < ApplicationController
     reg_key = params[:message][:registration_key]
     if reg_key != device.registration_key
       flash[ failure: "You have the incorrect registration key" ]
-      redirect_to device 
+      redirect_to device
+      return 
     end
 
     #Encode the data with ProtoBuf
@@ -37,17 +38,18 @@ class MessagesController < ApplicationController
   end
 
   def receive
-    device_id = (params[:message][:device_id]).to_i
+    device_id = (params[:device_id]).to_i
     device = Device.find(device_id)
 
     #Authenticate the device
-    reg_key = params[:message][:registration_key]
+    reg_key = params[:registration_key]
     if reg_key != device.registration_key
       flash[ failure: "You have the incorrect registration key" ]
       redirect_to device 
+      return
     end
 
-    Message.create( device_id: device_id, data: params[:message][:data] )
+    Message.create( device_id: device_id, data: params[:data] )
     redirect_to device
   end
 
