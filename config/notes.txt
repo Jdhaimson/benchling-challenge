@@ -1,0 +1,2 @@
+DATABASE_URL:postgres://ubayvbpcrjcwmv:zxPYcMrK1ZVqKk0auUv2E0RH8I@ec2-54-243-228-241.compute-1.amazonaws.com:5432/d24r3b625el43s
+-> DATABASE_URL:em_postgresql://ubayvbpcrjcwmv:zxPYcMrK1ZVqKk0auUv2E0RH8I@ec2-54-243-228-241.compute-1.amazonaws.com:5432/d24r3b625el43s
