@@ -36,8 +36,8 @@ BenchlingChallenge::Application.configure do
   config.assets.debug = true
 
   # Implement fibers 
-  config.middleware.insert_before ActionDispatch::ShowExceptions, Rack::FiberPool
-  config.threadsafe!
+#  config.middleware.insert_before ActionDispatch::ShowExceptions, Rack::FiberPool
+#  config.threadsafe!
 
 
   # Force amazon s3 to use Evented HTTP requests

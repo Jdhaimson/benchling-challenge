@@ -1,5 +1,5 @@
 base: &base
-  adapter: em_postgresql
+  adapter: postgresql
   host: localhost
   port: 5432
   database: benchlingchallenge_development
@@ -11,7 +11,7 @@ development:
   <<: *base
 
 production:
-  adapter: em_postgresql
+  adapter: postgresql
   host: localhost
   username: user
   database: app-dev

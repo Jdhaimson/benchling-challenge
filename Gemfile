@@ -5,12 +5,14 @@ gem 'rails', '3.2.11'
 # Gems for async programming with pg and amazon s3
 # For more info, see: https://github.com/leftbee/em-postgresql-adapter
 gem 'pg'
-gem 'thin'
-gem 'em-postgresql-adapter', :git => 'git://github.com/leftbee/em-postgresql-adapter.git'
-gem 'rack-fiber_pool',  :require => 'rack/fiber_pool'
-gem 'em-synchrony', :git     => 'git://github.com/igrigorik/em-synchrony.git',
-                    :require => ['em-synchrony',
-                                 'em-synchrony/activerecord']
+
+# Gems commented out for benchmarking
+# gem 'thin'
+# gem 'em-postgresql-adapter', :git => 'git://github.com/leftbee/em-postgresql-adapter.git'
+# gem 'rack-fiber_pool',  :require => 'rack/fiber_pool'
+# gem 'em-synchrony', :git     => 'git://github.com/igrigorik/em-synchrony.git',
+#                    :require => ['em-synchrony',
+#                                 'em-synchrony/activerecord']
 # Amazon S3 gems
 # gem 'paperclip'
 # gem 'aws-sdk'
