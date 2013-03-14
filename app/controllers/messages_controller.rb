@@ -12,45 +12,51 @@ class MessagesController < ApplicationController
   def new
     @device_id = params[:device_id]
     @device = Device.find(@device_id)
-    @message = @device.messages.build
+    if !@device.nil?
+      @message = @device.messages.build
+    end
   end
 
   def create 
     device_id = (params[:message][:device_id]).to_i
     device = Device.find(device_id)
 
-    #Authenticate the device
-    reg_key = params[:message][:registration_key]
-    if reg_key != device.registration_key
-      flash[ failure: "You have the incorrect registration key" ]
-      redirect_to device
-      return 
-    end
+    if !device.nil?
+      #Authenticate the device
+      reg_key = params[:message][:registration_key]
+      if reg_key != device.registration_key
+        flash[ failure: "You have the incorrect registration key" ]
+        redirect_to device
+        return 
+      end
 
-    #Encode the data with ProtoBuf
-    require 'probuff.pb'
-    data = params[:message][:data]
-    msg = ProBuff::MyMessage.new( registration_key: reg_key, device_id: device_id )
-    msg.data = [data]
-    encoded_data = msg.to_s
-    @message = Message.create(device_id: device_id, data: encoded_data )
-    redirect_to device
+      #Encode the data with ProtoBuf
+      require 'probuff.pb'
+      data = params[:message][:data]
+      msg = ProBuff::MyMessage.new( registration_key: reg_key, device_id: device_id )
+      msg.data = [data]
+      encoded_data = msg.to_s
+      @message = Message.create(device_id: device_id, data: encoded_data )
+      redirect_to device
+    end
   end
 
   def receive
     device_id = (params[:device_id]).to_i
     device = Device.find(device_id)
 
-    #Authenticate the device
-    reg_key = params[:registration_key]
-    if reg_key != device.registration_key
-      flash[ failure: "You have the incorrect registration key" ]
-      redirect_to device 
-      return
-    end
+    if !device.nil?
+      #Authenticate the device
+      reg_key = params[:registration_key]
+      if reg_key != device.registration_key
+        flash[ failure: "You have the incorrect registration key or device id" ]
+        redirect_to device 
+        return
+      end
 
-    Message.create( device_id: device_id, data: params[:data] )
-    redirect_to device
+      Message.create( device_id: device_id, data: params[:data] )
+      redirect_to device
+    end
   end
 
   def show

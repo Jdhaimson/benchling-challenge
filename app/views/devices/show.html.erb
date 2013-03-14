@@ -2,4 +2,5 @@
 <p>Last Message:</p>
 <p><%= @message if !@message.nil?%></p>
 
+<p><%= link_to "Add a Message", device_messages_path(@device) + "/new" %></p>
 <p><%= link_to "See All Messages", device_messages_path(@device) %></p>
