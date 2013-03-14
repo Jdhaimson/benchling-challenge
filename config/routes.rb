@@ -5,7 +5,7 @@ BenchlingChallenge::Application.routes.draw do
   end
  
   root to: "devices#index"
-  match 'messages/receive'
+  match 'messages/receive' => "messages#receive"
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
