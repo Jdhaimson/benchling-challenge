@@ -12,9 +12,7 @@ class MessagesController < ApplicationController
   def new
     @device_id = params[:device_id]
     @device = Device.find(@device_id)
-    if !@device.nil?
-      @message = @device.messages.build
-    end
+    @message = @device.messages.build
   end
 
   def create 
@@ -62,10 +60,12 @@ class MessagesController < ApplicationController
   def show
     enc_message = Message.find(params[:id])
 
-    #Decode the data
-    require 'probuff.pb'
-    pb = ProBuff::MyMessage.new 
-    @message = pb.parse_from_string(enc_message.data).as_json
+    if !enc_message.nil?
+      #Decode the data
+      require 'probuff.pb'
+      pb = ProBuff::MyMessage.new 
+      @message = pb.parse_from_string(enc_message.data).as_json
+    end
   end
 
 end
