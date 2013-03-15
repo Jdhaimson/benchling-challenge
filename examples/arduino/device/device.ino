@@ -1,104 +1,116 @@
 #include <stdint.h>
-
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+/*
 extern "C" {
-  #include "pb_decode.h"
-  #include "pb_encode.h"
-
-  #include "probuff.pb.h"
+//  #include "pb_decode.h"
+//  #include "pb_encode.h"
+//  #include "probuff.pb.h"
 }
-
+*/
 #include <SPI.h>
 #include <Ethernet.h>
-#include <HTTPClient.h>
-#include <Metro.h>
+
+// Device Variables
+const char REGISTRATION_KEY[] = "8cb9f9b26fbfb9bfb390";// Enter key created upon device registration
+const int DEVICE_ID = 14;
 
 // Ethernet Variables
 byte mac[] = {  0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xEF };  // MAC address for the ethernet controller.
-byte server[] = { 107,22,226,64 };                     // address of the server you want to connect to (benchling-challenge.herokuapp.com):
-EthernetClient client;
-#define FEED_URI             "/messages/receive"
+IPAddress ip( 18,111,11,77);                           // address of the server you want to connect to (benchling-challenge.herokuapp.com):
+const char serverName[] = "18.111.11.77";              // Name of server (since I didn't set up a domain, I just used the IP)
+EthernetClient client(3000);                           // Initialize Ethernet client library on port 3000
+const char FEED_URI[] = "/messages/receive";           // URI to post to
 
-// Device Variables
-#define REGISTRATION_KEY     "8cb9f9b26fbfb9bfb390" 
-#define DEVICE_ID            "14"
-
-// initialize the Metro library instance:
-Metro sendingMetro = Metro(15000L);  
-boolean lastConnected = false;       // state of the connection last time through the main loop
-
-// buffer to store http send string
-char data[40];
-
-// max size of buffer for data to be sent in bytes
-// change based on how big of a message you expect to send
-int proBufSize = 256;
+//Max sizes used by protobuf encoder, change based on size of expected messages and your microcontroller
+const int MAX_STRING_SIZE = 64;
+const int MAX_BINARY_SIZE = 64;
+const int PRO_BUF_SIZE = 256;
 
 void setup() { 
-  // start the ethernet connection and serial port:
-  Ethernet.begin(mac);
+
   Serial.begin(9600);
-  
-  // give the ethernet module time to boot up:
-  delay(1000);
+  while (!Serial) {
+    ; // wait for serial port to connect. Needed for Leonardo only
+  }  
   
   Serial.println("Benchling Challenge Device");
-  Serial.println("ready");
+  //keep trying to connect to Ethernet until connected
+  while(!startEthernet()); 
+  Serial.println("Device Ready");
 }
 
 void loop() {
   // Insert code to read data that you want to send here:
-  char sample_string_data[ ] = "Hello World!";
+//  char* sample_string_data[]= {"Hello", "World!"};
+//  char sample_binary_data[]= {byte(47)};
  
   // Encode data
-  uint8_t out_buffer[proBufSize];
-  pb_ostream_t ostream = pb_ostream_from_buffer( out_buffer, sizeof(out_buffer) );
+//  ProBuff_MyMessage msg = {registration_key, device_id, *sample_string_data, *sample_binary_data};
+//  ProBuff_MyMessage msg = {NULL, &device_id, NULL, NULL};
+//  uint8_t out_buffer[PRO_BUF_SIZE];
+//  pb_ostream_t ostream = pb_ostream_from_buffer( out_buffer, sizeof(out_buffer) );
+//  pb_encode(&ostream, ProBuff_MyMessage_fields, &msg);
 
-//CHANGE beerduino_echo_fields TO CORRECT MESSAGE FIELDS 
-  if (pb_encode(&ostream, probuff_Echo_fields, &sample_string_data)) {
-    // Serial.write(ostream.bytes_written);
-    // Serial.write(out_buffer, ostream.bytes_written);
+//if (pb_encode(&ostream, ProBuff_MyMessage_fields, &msg)) {
     // Code to send data to server
-    // if you're not connected, and Metro has expired then connect again and send data:
-    if(sendingMetro.check() && !client.connected() ) {
+      postMessage("Hello World!");
+      delay(5000);
+//  }
+}
 
-      Serial.print("sending ");
-      Serial.println(sample_string_data);
-      
-      Serial.println(data);
-    
-      // create HTTPClient
-      HTTPClient client( "benchling-challenge.herokuapp.com", server );
+boolean startEthernet()
+{ 
+  client.stop();
 
-//PROPERLY FORMAT MESSAGE HEADER    
-      http_client_parameter message_header[] = {
-        { "registration_key", REGISTRATION_KEY  },
-        { "device_id", DEVICE_ID },
-        { "data", ostream }
-      };
-      
-      // FILE is the return STREAM type of the HTTPClient
-      FILE* result = client.postURI( FEED_URI, NULL, data, message_header );
+  boolean isConnected;
+
+  Serial.println("Connecting Arduino to network...");
+  Serial.println();  
+
+  delay(1000);
   
-      int returnCode = client.getLastReturnCode();
-    
-      if (result!=NULL) {
-        client.closeStream(result);  // close the STREAM
-      } 
-      else {
-        Serial.println("failed to connect");
-      }
-    
-      if (returnCode==200) {
-        Serial.println("data uploaded");
-      } 
-      else {
-        Serial.print("ERROR: Server returned ");
-        Serial.println(returnCode);
-      }
-    }  
-    // store the state of the connection for next time through
-    // the loop:
-    lastConnected = client.connected(); 
+  // Connect to network amd obtain an IP address using DHCP
+  if (Ethernet.begin(mac) == 0)
+  {
+    Serial.println("DHCP Failed, reset Arduino to try again");
+    Serial.println();
+    isConnected = false;
+  }
+  else
+  {
+    Serial.println("Arduino connected to network using DHCP");
+    Serial.print("My address:");
+    Serial.println(Ethernet.localIP());    
+    Serial.println();
+    isConnected = true;
+  }
+  
+  delay(1000);
+  return isConnected;
+}
+
+void postMessage( String enc_data ) {
+  String postString = String("registration_key=") + REGISTRATION_KEY + String("&device_id") + String(DEVICE_ID) + String("&data=") + enc_data;
+
+  // attempt to connect, and wait a millisecond:
+  Serial.println("connecting to server...");
+  if (client.connect(serverName, 3000)) {
+    Serial.println("making HTTP request...");
+    // make HTTP POST Request:
+    client.println(String("POST ") + FEED_URI + String(" HTTP/1.1"));
+    client.println("HOST: 18.111.11.77");
+    client.println("Connection: close");
+    client.println("Content-Type: multipart/form-data");
+    client.print("Content-Length: ");
+    client.println(postString.length());
+    client.println();
+
+    client.print(postString);
+  }
+  else {
+    Serial.println("connection failed");
   }
 }
 
