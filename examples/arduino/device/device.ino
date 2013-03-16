@@ -10,8 +10,8 @@ int DEVICE_ID = 14;
 
 // Ethernet Variables
 byte mac[] = {  0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xEF };  // MAC address for the ethernet controller.
-IPAddress ip( 18,111,11,77);                           // address of the server you want to connect to (benchling-challenge.herokuapp.com):
-const char serverName[] = "18.111.11.77";              // Name of server (since I didn't set up a domain, I just used the IP)
+IPAddress ip( 18,245,5,214 );                           // address of the server you want to connect to (benchling-challenge.herokuapp.com):
+const char serverName[] = "18.245.5.214";              // Name of server (since I didn't set up a domain, I just used the IP)
 EthernetClient client(3000);                           // Initialize Ethernet client library on port 3000
 const char FEED_URI[] = "/messages/receive";           // URI to post to
 
