@@ -35,8 +35,7 @@ void loop() {
 
   byte *buffer;
   if(encodeData(buffer, REGISTRATION_KEY, DEVICE_ID, string_data, binary_data)) {
-    // convert to string representation of binary data for HTTP Post Request
-    postMessage(binaryToStrRep(buffer));
+    postMessage(buffer);    
   }
   
   delete buffer;
@@ -79,25 +78,6 @@ boolean encodeData(byte *buf, char regKey[], int dev_id, String st_data[], byte 
   return isSuccessful;
 }
 
-String binaryToStrRep(byte input[]){
-  String binRep;
-  byte mask;
-  int i;
-  
-  for (i = 0; i < sizeof(input); i++ ) {
-    byte data = input[i];
-    //use bit masking to get each individual bit
-    for (mask = 10000000; mask>0; mask >>= 1) { //iterate through bit mask, MSB first
-      if (data & mask) { // if bitwise AND resolves to true
-        binRep += 1;
-      }
-      else { //if bitwise and resolves to false
-        binRep += 0;
-      }
-    }
-  }
-}
-
 boolean startEthernet()
 { 
   client.stop();
@@ -129,8 +109,9 @@ boolean startEthernet()
   return isConnected;
 }
 
-void postMessage( String enc_data ) {
-  String postString = String("registration_key=") + REGISTRATION_KEY + String("&device_id") + String(DEVICE_ID) + String("&data=") + enc_data;
+void postMessage( byte enc_data[] ) {
+//  String postString = String("registration_key=") + REGISTRATION_KEY + String("&device_id") + String(DEVICE_ID) + String("&data=") + enc_data;
+  int contLen = sizeof(REGISTRATION_KEY) + sizeof(DEVICE_ID) + sizeof(enc_data);
 
   // attempt to connect, and wait a millisecond:
   Serial.println("connecting to server...");
@@ -142,10 +123,17 @@ void postMessage( String enc_data ) {
     client.println("Connection: close");
     client.println("Content-Type: multipart/form-data");
     client.print("Content-Length: ");
-    client.println(postString.length());
+    client.println(contLen);
     client.println();
 
-    client.print(postString);
+    client.print("registration_key=");
+    client.print(REGISTRATION_KEY);
+    client.print("&device_id=");
+    client.print(DEVICE_ID);
+    client.print("&data=");
+    for( int i = 0; i<sizeof(enc_data); i++) {
+      client.print(enc_data[i]);
+    }
   }
   else {
     Serial.println("connection failed");
